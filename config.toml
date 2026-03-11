@@ -54,7 +54,7 @@ cli-version = "dev"
 patches-version = "dev"
 
 [YT-Music-Morphe]
-enabled = true
+enabled = false
 app-name = "YT Music"
 direct-dlurl = "https://github.com/peternmuller/YTYTM-APK/releases/download/1/com.google.android.apps.youtube.music-8.44.54-arm64-v8a.apk"
 archive-dlurl = "https://archive.org/download/jhc-apks/apks/com.google.android.apps.youtube.music"
