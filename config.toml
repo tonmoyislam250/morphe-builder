@@ -28,6 +28,7 @@ excluded-patches = "'Custom Shorts action buttons' 'Force player buttons backgro
 patcher-args = "-e 'Theme' -OdarkThemeBackgroundColor=@android:color/black"
 
 [YT-Music-anddea]
+enabled = false
 app-name = "YT Music"
 archive-dlurl = "https://archive.org/download/jhc-apks/apks/com.google.android.apps.youtube.music"
 apkmirror-dlurl = "https://www.apkmirror.com/apk/google-inc/youtube-music"
