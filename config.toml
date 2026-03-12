@@ -45,6 +45,7 @@ patcher-args = "-e 'Dark theme' -OdarkThemeBackgroundColor=@android:color/black"
 
 # Morphe
 [YouTube-Morphe]
+enabled= false
 app-name = "YouTube"
 version = "20.44.38"
 direct-dlurl = "https://github.com/peternmuller/YTYTM-APK/releases/download/1/com.google.android.youtube-20.44.38-all.apk"
@@ -80,6 +81,7 @@ cli-source = "MorpheApp/morphe-cli"
 rv-brand = "Morphe"
 build-mode = "apk"
 dpi = "120-640dpi"  
+
 
 
 
