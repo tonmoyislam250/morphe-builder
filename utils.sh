@@ -201,8 +201,16 @@ config_update() {
 _req() {
 	local ip="$1" op="$2"
 	shift 2
+	
+	# Use proxy for APKMirror if PROXY_URL is set
+	local proxy_args=""
+	if [[ "$ip" == *"apkmirror.com"* ]] && [ -n "$PROXY_URL" ]; then
+		proxy_args="--proxy $PROXY_URL"
+		pr "Using proxy for APKMirror request"
+	fi
+	
 	if [ "$op" = - ]; then
-		if ! curl -L -c "$TEMP_DIR/cookie.txt" -b "$TEMP_DIR/cookie.txt" --connect-timeout 10 --retry 2 --fail -s -S "$@" "$ip"; then
+		if ! curl -L -c "$TEMP_DIR/cookie.txt" -b "$TEMP_DIR/cookie.txt" --connect-timeout 10 --retry 2 --fail -s -S $proxy_args "$@" "$ip"; then
 			epr "Request failed: $ip"
 			return 1
 		fi
@@ -214,7 +222,7 @@ _req() {
 			while [ -f "$dlp" ]; do sleep 1; done
 			return
 		fi
-		if ! curl -L -c "$TEMP_DIR/cookie.txt" -b "$TEMP_DIR/cookie.txt" --connect-timeout 10 --retry 2 --fail -s -S "$@" "$ip" -o "$dlp"; then
+		if ! curl -L -c "$TEMP_DIR/cookie.txt" -b "$TEMP_DIR/cookie.txt" --connect-timeout 10 --retry 2 --fail -s -S $proxy_args "$@" "$ip" -o "$dlp"; then
 			epr "Request failed: $ip"
 			return 1
 		fi
