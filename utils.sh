@@ -201,29 +201,9 @@ config_update() {
 _req() {
 	local ip="$1" op="$2"
 	shift 2
-	
-	# Use curl-impersonate for APKMirror to bypass Cloudflare
-	local curl_cmd="curl"
-	local curl_args="-L -c $TEMP_DIR/cookie.txt -b $TEMP_DIR/cookie.txt --connect-timeout 10 --retry 2 --fail -s -S"
-	
-	if [[ "$ip" == *"apkmirror.com"* ]]; then
-		# Try curl-impersonate if available (bypasses Cloudflare TLS fingerprinting)
-		if command -v curl-impersonate-chrome &> /dev/null; then
-			curl_cmd="curl-impersonate-chrome"
-			pr "Using curl-impersonate for Cloudflare bypass"
-		elif command -v curl_chrome116 &> /dev/null; then
-			curl_cmd="curl_chrome116"
-			pr "Using curl_chrome116 for Cloudflare bypass"
-		fi
-		
-		# Add proxy if set
-		if [ -n "$PROXY_URL" ]; then
-			curl_args="$curl_args --proxy $PROXY_URL"
-		fi
-	fi
-	
+	local curl_args=(-L -c "$TEMP_DIR/cookie.txt" -b "$TEMP_DIR/cookie.txt" --connect-timeout 5 --retry 0 --fail -s -S "$@" "$ip")
 	if [ "$op" = - ]; then
-		if ! $curl_cmd $curl_args "$@" "$ip"; then
+		if ! curl "${curl_args[@]}"; then
 			epr "Request failed: $ip"
 			return 1
 		fi
@@ -235,29 +215,21 @@ _req() {
 			while [ -f "$dlp" ]; do sleep 1; done
 			return
 		fi
-		if ! $curl_cmd $curl_args "$@" "$ip" -o "$dlp"; then
+		if ! curl "${curl_args[@]}" -o "$dlp"; then
 			epr "Request failed: $ip"
 			return 1
 		fi
 		mv -f "$dlp" "$op"
 	fi
 }
+ua() {
+	local ver
+	ver=$(curl -sf "https://product-details.mozilla.org/1.0/firefox_versions.json" | jq -re '.LATEST_FIREFOX_VERSION') || ver="148.0"
+	echo "Mozilla/5.0 (X11; Linux x86_64; rv:${ver%%.*}.0) Gecko/20100101 Firefox/${ver%%.*}.0"
+}
 req() {
-	_req "$1" "$2" \
-		-H "User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:135.0) Gecko/20100101 Firefox/135.0" \
-		-H "Accept: text/html,application/xhtml+xml,application/xml;q=0.9,image/avif,image/webp,image/png,image/svg+xml,*/*;q=0.8" \
-		-H "Accept-Language: en-US,en;q=0.5" \
-		-H "Accept-Encoding: gzip, deflate, br" \
-		-H "Referer: https://www.apkmirror.com/" \
-		-H "DNT: 1" \
-		-H "Connection: keep-alive" \
-		-H "Upgrade-Insecure-Requests: 1" \
-		-H "Sec-Fetch-Dest: document" \
-		-H "Sec-Fetch-Mode: navigate" \
-		-H "Sec-Fetch-Site: same-origin" \
-		-H "Sec-Fetch-User: ?1" \
-		-H "Priority: u=0, i" \
-		--compressed
+	if [ -z "${_UA:-}" ]; then _UA=$(ua); fi
+	_req "$1" "$2" --http2 --tlsv1.3 -A "$_UA"
 }
 gh_req() { _req "$1" "$2" -H "$GH_HEADER"; }
 gh_dl() {
