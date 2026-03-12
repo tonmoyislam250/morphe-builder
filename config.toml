@@ -71,7 +71,7 @@ build-mode = "both"
 [Reddit-Morphe]
 enabled = true
 app-name = "Reddit"
-version = "2026.10.0"
+version = "2026.04.0"
 archive-dlurl = "https://archive.org/download/jhc-apks/apks/com.reddit.frontpage"
 apkmirror-dlurl = "https://www.apkmirror.com/apk/redditinc/reddit/"
 patches-source = "MorpheApp/morphe-patches"
