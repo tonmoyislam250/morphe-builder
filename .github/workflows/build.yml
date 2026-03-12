@@ -30,11 +30,14 @@ jobs:
       - name: Install curl-impersonate for Cloudflare bypass
         run: |
           # Install curl-impersonate to bypass Cloudflare on APKMirror
-          wget -q https://github.com/lwthiker/curl-impersonate/releases/latest/download/curl-impersonate-chrome.tar.gz
-          tar -xzf curl-impersonate-chrome.tar.gz
-          sudo mv curl-impersonate-chrome /usr/local/bin/
+          wget -q https://github.com/lwthiker/curl-impersonate/releases/download/v0.6.1/curl-impersonate-v0.6.1.x86_64-linux-gnu.tar.gz
+          tar -xzf curl-impersonate-v0.6.1.x86_64-linux-gnu.tar.gz
+          sudo cp curl-impersonate-chrome /usr/local/bin/
           sudo chmod +x /usr/local/bin/curl-impersonate-chrome
-          curl-impersonate-chrome --version || echo "curl-impersonate installed"
+          # Copy required libraries
+          sudo mkdir -p /usr/local/lib/curl-impersonate
+          sudo cp -r lib/* /usr/local/lib/curl-impersonate/ || true
+          echo "curl-impersonate installed successfully"
 
       - name: Update config
         if: ${{ inputs.from_ci }}

@@ -6,37 +6,46 @@ set -e
 
 echo "[+] Installing curl-impersonate for Cloudflare bypass..."
 
+# curl-impersonate version
+VERSION="0.6.1"
+
 # Detect OS
 if [[ "$OSTYPE" == "linux-gnu"* ]]; then
     ARCH=$(uname -m)
     if [ "$ARCH" = "x86_64" ]; then
-        ARCH="x86_64"
+        RELEASE_URL="https://github.com/lwthiker/curl-impersonate/releases/download/v${VERSION}/curl-impersonate-v${VERSION}.x86_64-linux-gnu.tar.gz"
     elif [ "$ARCH" = "aarch64" ]; then
-        ARCH="aarch64"
+        RELEASE_URL="https://github.com/lwthiker/curl-impersonate/releases/download/v${VERSION}/curl-impersonate-v${VERSION}.aarch64-linux-gnu.tar.gz"
     else
         echo "[-] Unsupported architecture: $ARCH"
         exit 1
     fi
     
     # Download and install
-    RELEASE_URL="https://github.com/lwthiker/curl-impersonate/releases/latest/download/curl-impersonate-chrome-linux-$ARCH.tar.gz"
-    
     echo "[+] Downloading from $RELEASE_URL"
     wget -q "$RELEASE_URL" -O /tmp/curl-impersonate.tar.gz
     
     echo "[+] Extracting..."
-    tar -xzf /tmp/curl-impersonate.tar.gz -C /tmp
+    cd /tmp
+    tar -xzf curl-impersonate.tar.gz
     
     echo "[+] Installing to /usr/local/bin..."
-    sudo install -m755 /tmp/curl-impersonate-chrome /usr/local/bin/
+    sudo cp curl-impersonate-chrome /usr/local/bin/
+    sudo chmod +x /usr/local/bin/curl-impersonate-chrome
     
     # Install required libraries
-    if [ -d /tmp/lib ]; then
-        sudo cp -r /tmp/lib/* /usr/local/lib/ 2>/dev/null || true
+    echo "[+] Installing libraries..."
+    if [ -d lib ]; then
+        sudo mkdir -p /usr/local/lib/curl-impersonate
+        sudo cp -r lib/* /usr/local/lib/curl-impersonate/ || true
+        # Update library path
+        echo "/usr/local/lib/curl-impersonate" | sudo tee /etc/ld.so.conf.d/curl-impersonate.conf > /dev/null
+        sudo ldconfig
     fi
     
     echo "[+] Cleaning up..."
     rm -f /tmp/curl-impersonate.tar.gz
+    cd - > /dev/null
     
     echo "[✓] curl-impersonate installed successfully!"
     echo "[+] Testing installation..."

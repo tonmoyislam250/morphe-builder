@@ -77,9 +77,10 @@ This will install `curl-impersonate` which mimics real browser TLS fingerprints 
 **Manual installation:**
 - **Linux (Ubuntu/Debian):**
   ```bash
-  wget https://github.com/lwthiker/curl-impersonate/releases/latest/download/curl-impersonate-chrome-linux-x86_64.tar.gz
-  tar -xzf curl-impersonate-chrome-linux-x86_64.tar.gz
-  sudo install -m755 curl-impersonate-chrome /usr/local/bin/
+  wget https://github.com/lwthiker/curl-impersonate/releases/download/v0.6.1/curl-impersonate-v0.6.1.x86_64-linux-gnu.tar.gz
+  tar -xzf curl-impersonate-v0.6.1.x86_64-linux-gnu.tar.gz
+  sudo cp curl-impersonate-chrome /usr/local/bin/
+  sudo chmod +x /usr/local/bin/curl-impersonate-chrome
   ```
 - **macOS:**
   ```bash
