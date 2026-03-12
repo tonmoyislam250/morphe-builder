@@ -97,7 +97,7 @@ get_prebuilts() {
 			elif [ "$(jq 'length' <<<"$matches")" -ne 1 ]; then
 				wpr "More than 1 asset was found for this cli release. Falling back to the first one found..."
 			fi
-			asset=$(jq -r ".[-1]" <<<"$matches")
+			asset=$(jq -r ".[0]" <<<"$matches")
 			url=$(jq -r .url <<<"$asset")
 			name=$(jq -r .name <<<"$asset")
 			file="${dir}/${name}"
