@@ -7,3 +7,6 @@ Install [ReVanced GmsCore](https://github.com/ReVanced/GmsCore/releases/latest) 
 CLI: MorpheApp/morphe-cli-1.5.0-all.jar  
 Patches: MorpheApp/patches-1.18.0.mpp  
 [Changelog](https://github.com/MorpheApp/morphe-patches/releases/tag/v1.18.0)  
+
+Skipped:  
+Patches: MorpheApp/patches-1.18.0.mpp    
