@@ -14,3 +14,8 @@ Patches: MorpheApp/patches-1.18.1-dev.2.mpp
 CLI: ReVanced/revanced-cli-5.0.1-all.jar  
 Patches: ReVanced/patches-5.50.2.rvp  
 [Changelog](https://github.com/ReVanced/revanced-patches/releases/tag/v5.50.2)  
+
+Skipped:  
+Patches: ReVanced/patches-5.50.2.rvp  
+Patches: MorpheApp/patches-1.18.1-dev.2.mpp  
+Patches: anddea/patches.json    
