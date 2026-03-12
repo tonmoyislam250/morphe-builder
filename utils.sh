@@ -202,15 +202,28 @@ _req() {
 	local ip="$1" op="$2"
 	shift 2
 	
-	# Use proxy for APKMirror if PROXY_URL is set
-	local proxy_args=""
-	if [[ "$ip" == *"apkmirror.com"* ]] && [ -n "$PROXY_URL" ]; then
-		proxy_args="--proxy $PROXY_URL"
-		pr "Using proxy for APKMirror request"
+	# Use curl-impersonate for APKMirror to bypass Cloudflare
+	local curl_cmd="curl"
+	local curl_args="-L -c $TEMP_DIR/cookie.txt -b $TEMP_DIR/cookie.txt --connect-timeout 10 --retry 2 --fail -s -S"
+	
+	if [[ "$ip" == *"apkmirror.com"* ]]; then
+		# Try curl-impersonate if available (bypasses Cloudflare TLS fingerprinting)
+		if command -v curl-impersonate-chrome &> /dev/null; then
+			curl_cmd="curl-impersonate-chrome"
+			pr "Using curl-impersonate for Cloudflare bypass"
+		elif command -v curl_chrome116 &> /dev/null; then
+			curl_cmd="curl_chrome116"
+			pr "Using curl_chrome116 for Cloudflare bypass"
+		fi
+		
+		# Add proxy if set
+		if [ -n "$PROXY_URL" ]; then
+			curl_args="$curl_args --proxy $PROXY_URL"
+		fi
 	fi
 	
 	if [ "$op" = - ]; then
-		if ! curl -L -c "$TEMP_DIR/cookie.txt" -b "$TEMP_DIR/cookie.txt" --connect-timeout 10 --retry 2 --fail -s -S $proxy_args "$@" "$ip"; then
+		if ! $curl_cmd $curl_args "$@" "$ip"; then
 			epr "Request failed: $ip"
 			return 1
 		fi
@@ -222,7 +235,7 @@ _req() {
 			while [ -f "$dlp" ]; do sleep 1; done
 			return
 		fi
-		if ! curl -L -c "$TEMP_DIR/cookie.txt" -b "$TEMP_DIR/cookie.txt" --connect-timeout 10 --retry 2 --fail -s -S $proxy_args "$@" "$ip" -o "$dlp"; then
+		if ! $curl_cmd $curl_args "$@" "$ip" -o "$dlp"; then
 			epr "Request failed: $ip"
 			return 1
 		fi

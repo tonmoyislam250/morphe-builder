@@ -61,6 +61,33 @@ cd revanced-morphe-builder
 ./build.sh
 ```
 
+## Troubleshooting
+
+### APKMirror 403 Errors (Cloudflare Protection)
+
+If you're getting `curl: (22) The requested URL returned error: 403` when downloading from APKMirror, this is due to Cloudflare bot protection. The builder will automatically use fallback sources (Archive.org, Uptodown, direct GitHub), but if you want to use APKMirror, install `curl-impersonate`:
+
+**Quick fix:**
+```bash
+./install-curl-impersonate.sh
+```
+
+This will install `curl-impersonate` which mimics real browser TLS fingerprints to bypass Cloudflare. The build script will automatically detect and use it.
+
+**Manual installation:**
+- **Linux (Ubuntu/Debian):**
+  ```bash
+  wget https://github.com/lwthiker/curl-impersonate/releases/latest/download/curl-impersonate-chrome-linux-x86_64.tar.gz
+  tar -xzf curl-impersonate-chrome-linux-x86_64.tar.gz
+  sudo install -m755 curl-impersonate-chrome /usr/local/bin/
+  ```
+- **macOS:**
+  ```bash
+  brew install curl-impersonate
+  ```
+
+**GitHub Actions:** The CI workflow automatically installs `curl-impersonate` to bypass Cloudflare protection.
+
 ## Credits
 - [j-hc](https://github.com/j-hc) for creating this amazing builder.
 - [Kevinr99089](https://github.com/kevinr99089) for providing assistance with the builder.

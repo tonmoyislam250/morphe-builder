@@ -1,7 +1,6 @@
 name: Build Modules
-# Optional: Add PROXY_URL to repository secrets for reliable APKMirror access
-# Format: http://username:password@proxy-host:port or socks5://proxy-host:port
-# Suggested services: WebShare.io, ScraperAPI, SmartProxy
+# Uses curl-impersonate to bypass Cloudflare protection on APKMirror
+# Optional: Add PROXY_URL secret (http://user:pass@host:port) for additional proxy layer
 on:
   workflow_call:
     inputs:
@@ -28,6 +27,15 @@ jobs:
           fetch-depth: 0
           submodules: true
 
+      - name: Install curl-impersonate for Cloudflare bypass
+        run: |
+          # Install curl-impersonate to bypass Cloudflare on APKMirror
+          wget -q https://github.com/lwthiker/curl-impersonate/releases/latest/download/curl-impersonate-chrome.tar.gz
+          tar -xzf curl-impersonate-chrome.tar.gz
+          sudo mv curl-impersonate-chrome /usr/local/bin/
+          sudo chmod +x /usr/local/bin/curl-impersonate-chrome
+          curl-impersonate-chrome --version || echo "curl-impersonate installed"
+
       - name: Update config
         if: ${{ inputs.from_ci }}
         run: |
@@ -47,23 +55,16 @@ jobs:
           if [ -z "$TAG" ]; then TAG=0; fi
           echo "NEXT_VER_CODE=$((TAG + 1))" >> $GITHUB_OUTPUT
 
-      - name: Setup proxy for APKMirror
+      - name: Setup optional proxy
         id: setup_proxy
         run: |
-          # Use custom proxy from secrets if available, otherwise fetch free proxy
+          # Optional: use custom proxy from secrets if needed
           if [ -n "${{ secrets.PROXY_URL }}" ]; then
             echo "PROXY_URL=${{ secrets.PROXY_URL }}" >> $GITHUB_OUTPUT
             echo "Using custom proxy from secrets"
           else
-            # Fetch working proxy from free proxy list
-            PROXY=$(curl -sL "https://api.proxyscrape.com/v2/?request=get&protocol=http&timeout=10000&country=all&ssl=all&anonymity=all" | head -n 1)
-            if [ -n "$PROXY" ]; then
-              echo "PROXY_URL=http://$PROXY" >> $GITHUB_OUTPUT
-              echo "Found free proxy: $PROXY"
-            else
-              echo "PROXY_URL=" >> $GITHUB_OUTPUT
-              echo "No proxy found, will use direct connection and fallback sources"
-            fi
+            echo "PROXY_URL=" >> $GITHUB_OUTPUT
+            echo "Using curl-impersonate without proxy"
           fi
 
       - name: Build modules/APKs
