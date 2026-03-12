@@ -202,6 +202,12 @@ _req() {
 	local ip="$1" op="$2"
 	shift 2
 	
+	# Validate URL is not empty
+	if [ -z "$ip" ]; then
+		epr "Request failed: URL is empty"
+		return 1
+	fi
+	
 	# Use curl-impersonate for APKMirror to bypass Cloudflare
 	local curl_cmd="curl"
 	local curl_args="-L -c $TEMP_DIR/cookie.txt -b $TEMP_DIR/cookie.txt --connect-timeout 10 --retry 2 --fail -s -S"
@@ -223,6 +229,7 @@ _req() {
 	fi
 	
 	if [ "$op" = - ]; then
+		pr "Requesting URL: $ip"
 		if ! $curl_cmd $curl_args "$@" "$ip"; then
 			epr "Request failed: $ip"
 			return 1
@@ -396,10 +403,15 @@ dl_apkmirror() {
 				done
 			done
 			[ -z "$dlurl" ] && return 1
+			pr "Download page URL: $dlurl"
 			resp=$(req "$dlurl" -)
 		fi
+		pr "Extracting download button URL..."
 		url=$(echo "$resp" | $HTMLQ --base https://www.apkmirror.com --attribute href "a.btn") || return 1
+		pr "Download button URL: $url"
+		pr "Getting final download URL..."
 		url=$(req "$url" - | $HTMLQ --base https://www.apkmirror.com --attribute href "span > a[rel = nofollow]") || return 1
+		pr "Final download URL: $url"
 	fi
 
 	if [ "$is_bundle" = true ]; then
