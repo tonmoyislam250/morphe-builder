@@ -536,7 +536,8 @@ check_sig() {
 	if grep -q "$pkg_name" sig.txt; then
 		sig=$(java -jar --enable-native-access=ALL-UNNAMED "$APKSIGNER" verify --print-certs "$file" | grep ^Signer | grep SHA-256 | tail -1 | awk '{print $NF}')
 		echo "$pkg_name signature: ${sig}"
-		grep -qFx "$sig $pkg_name" sig.txt
+		# Check if signature matches any of the known signatures for this package
+		grep "$pkg_name" sig.txt | awk '{print $1}' | grep -qFx "$sig"
 	fi
 }
 

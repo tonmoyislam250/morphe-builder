@@ -64,3 +64,27 @@ module-prop-name = "some-app-module"                       # module prop name.
 dpi = "360-480dpi"                                         # used to select apk variant from apkmirror. default: nodpi
 arch = "arm64-v8a"                                         # 'arm64-v8a', 'arm-v7a', 'all', 'both'. 'both' downloads both arm64-v8a and arm-v7a. default: all
 ```
+
+## APK Signature Verification
+
+The builder verifies APK signatures against known good signatures in `sig.txt` before building. This ensures you're patching legitimate APKs.
+
+### Format
+Each line in `sig.txt` contains a SHA-256 signature hash and package name:
+```
+<sha256_hash> <package_name>
+```
+
+### Multiple Signatures
+You can add multiple trusted signatures for the same package (one per line). This is useful when:
+- Apps have different signatures across versions
+- Apps have different signatures for different architectures
+- You want to support both official and beta releases
+
+Example:
+```
+3257d599a49d2c961a471ca9843f59d341a405884583fc087df4237b733bbd6d com.google.android.youtube
+a1b2c3d4e5f6g7h8i9j0k1l2m3n4o5p6q7r8s9t0u1v2w3x4y5z6a7b8c9d0e1f2 com.google.android.youtube
+```
+
+The build will succeed if the APK signature matches **any** of the listed signatures for that package.
