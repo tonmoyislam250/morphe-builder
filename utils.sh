@@ -223,12 +223,10 @@ _req() {
 	fi
 	
 	if [ "$op" = - ]; then
-		if ! curl_out=$($curl_cmd $curl_args "$@" "$ip" 2>&1); then
-			epr "Request failed for URL: $ip"
-			epr "Curl error: $curl_out"
+		if ! $curl_cmd $curl_args "$@" "$ip"; then
+			epr "Request failed: $ip"
 			return 1
 		fi
-		echo "$curl_out"
 	else
 		if [ -f "$op" ]; then return; fi
 		local dlp
@@ -237,10 +235,8 @@ _req() {
 			while [ -f "$dlp" ]; do sleep 1; done
 			return
 		fi
-		if ! curl_out=$($curl_cmd $curl_args "$@" "$ip" -o "$dlp" 2>&1); then
-			epr "Request failed for URL: $ip"
-			epr "Curl error: $curl_out"
-			rm -f "$dlp"
+		if ! $curl_cmd $curl_args "$@" "$ip" -o "$dlp"; then
+			epr "Request failed: $ip"
 			return 1
 		fi
 		mv -f "$dlp" "$op"
@@ -386,12 +382,8 @@ dl_apkmirror() {
 		local resp node app_table apkmname dlurl=""
 		apkmname=$($HTMLQ "h1.marginZero" --text <<<"$__APKMIRROR_RESP__")
 		apkmname="${apkmname,,}" apkmname="${apkmname// /-}" apkmname="${apkmname//[^a-z0-9-]/}"
-		if [ -z "$apkmname" ]; then
-			epr "Failed to extract app name from APKMirror page"
-			return 1
-		fi
 		url="${url}/${apkmname}-${version//./-}-release/"
-		pr "Attempting to download from: $url"
+		pr "APKMirror URL: $url (apkmname='$apkmname', version='$version')"
 		resp=$(req "$url" -) || return 1
 		node=$($HTMLQ "div.table-row.headerFont:nth-last-child(1)" -r "span:nth-child(n+3)" <<<"$resp")
 		if [ "$node" ]; then
