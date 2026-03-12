@@ -1,4 +1,4 @@
-enable-module-update = true
+enable-module-update = false
 
 # ReVanced
 [YouTube]
@@ -51,8 +51,6 @@ patches-source = "MorpheApp/morphe-patches"
 cli-source = "MorpheApp/morphe-cli"
 rv-brand = "Morphe"
 build-mode = "both"
-cli-version = "dev"
-patches-version = "dev"
 
 [YT-Music-Morphe]
 enabled = false
