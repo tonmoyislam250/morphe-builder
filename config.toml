@@ -70,9 +70,11 @@ build-mode = "both"
 [Reddit-Morphe]
 enabled = true
 app-name = "Reddit"
+version = "2026.10.0"
 archive-dlurl = "https://archive.org/download/jhc-apks/apks/com.reddit.frontpage"
 apkmirror-dlurl = "https://www.apkmirror.com/apk/redditinc/reddit/"
 patches-source = "MorpheApp/morphe-patches"
 cli-source = "MorpheApp/morphe-cli"
 rv-brand = "Morphe"
 build-mode = "both"
+dpi = "nodpi anydpi 120-640dpi"  
