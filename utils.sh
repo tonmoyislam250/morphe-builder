@@ -223,17 +223,17 @@ _req() {
 }
 req() {
 	_req "$1" "$2" \
-		-H "User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:128.0) Gecko/20100101 Firefox/128.0" \
+		-H "User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:135.0) Gecko/20100101 Firefox/135.0" \
 		-H "Accept: text/html,application/xhtml+xml,application/xml;q=0.9,image/avif,image/webp,image/png,image/svg+xml,*/*;q=0.8" \
 		-H "Accept-Language: en-US,en;q=0.5" \
 		-H "Accept-Encoding: gzip, deflate, br" \
+		-H "Referer: https://www.apkmirror.com/" \
 		-H "DNT: 1" \
-		-H "Sec-GPC: 1" \
 		-H "Connection: keep-alive" \
 		-H "Upgrade-Insecure-Requests: 1" \
 		-H "Sec-Fetch-Dest: document" \
 		-H "Sec-Fetch-Mode: navigate" \
-		-H "Sec-Fetch-Site: none" \
+		-H "Sec-Fetch-Site: same-origin" \
 		-H "Sec-Fetch-User: ?1" \
 		-H "Priority: u=0, i" \
 		--compressed
@@ -591,7 +591,7 @@ build_rv() {
 	version_f=${version_f#v}
 	local stock_apk="${TEMP_DIR}/${pkg_name}-${version_f}-${arch_f}.apk"
 	if [ ! -f "$stock_apk" ]; then
-		for dl_p in apkmirror direct uptodown archive apkmirror; do
+		for dl_p in direct archive uptodown apkmirror; do
 			if [ -z "${args[${dl_p}_dlurl]}" ]; then continue; fi
 			pr "Downloading '${table}' from '${dl_p}'"
 			if ! isoneof $dl_p "${tried_dl[@]}"; then
