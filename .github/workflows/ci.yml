@@ -5,6 +5,19 @@ on:
     - cron: "0 */8 * * *"
 
 jobs:
+  ping-apkmirror:
+    runs-on: ubuntu-24.04
+    steps:
+      - name: Check APKMirror connectivity
+        run: |
+          echo "Testing APKMirror connectivity..."
+          if curl -sSL -I --connect-timeout 10 https://www.apkmirror.com/ | head -n 1; then
+            echo "✓ APKMirror is accessible"
+          else
+            echo "✗ APKMirror is not accessible"
+            exit 1
+          fi
+
   check:
     permissions: write-all
     runs-on: ubuntu-24.04
