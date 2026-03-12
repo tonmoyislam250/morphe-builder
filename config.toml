@@ -85,5 +85,6 @@ dpi = "120-640dpi"
 [Tiktok]
 version = "44.2.3"
 apkmirror-dlurl = "https://apkmirror.com/apk/tiktok-pte-ltd/tik-tok-including-musical-ly/"
-arch = "apk"
+dpi = "120-640dpi"
+build-mode = "apk"
 
