@@ -575,7 +575,7 @@ build_rv() {
 	version_f=${version_f#v}
 	local stock_apk="${TEMP_DIR}/${pkg_name}-${version_f}-${arch_f}.apk"
 	if [ ! -f "$stock_apk" ]; then
-		for dl_p in archive apkmirror direct uptodown; do
+		for dl_p in apkmirror direct uptodown archive; do
 			if [ -z "${args[${dl_p}_dlurl]}" ]; then continue; fi
 			pr "Downloading '${table}' from '${dl_p}'"
 			if ! isoneof $dl_p "${tried_dl[@]}"; then
