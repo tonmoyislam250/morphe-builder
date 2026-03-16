@@ -139,11 +139,14 @@ jobs:
       - name: Report to Telegram
         env:
           TG_TOKEN: ${{ secrets.TG_TOKEN }}
+          TG_CHAT_ID: ${{ secrets.TG_CHAT_ID }}
         if: env.TG_TOKEN != null
         run: |
           cd build || { echo "build folder not found"; exit 1; }
 
-          TG_CHAT="1001630840410"
+          # Telegram supergroup IDs are typically negative with a -100 prefix.
+          # Set secrets.TG_CHAT_ID to override the default.
+          TG_CHAT="${TG_CHAT_ID:-1001630840410}"
           NL=$'\n'
           APKS=""
           MODULES=""
