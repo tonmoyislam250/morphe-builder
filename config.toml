@@ -88,6 +88,5 @@ version = "36.5.4"
 apkmirror-dlurl = "https://apkmirror.com/apk/tiktok-pte-ltd/tik-tok-including-musical-ly/"
 patches-version = "dev"
 cli-version = "dev"
-dpi = "120-640dpi"
 build-mode = "apk"
 
