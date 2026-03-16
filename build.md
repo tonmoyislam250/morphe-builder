@@ -1,5 +1,4 @@
 YouTube-Morphe: 20.44.38  
-Tiktok: 36.5.4  
 Reddit-Morphe: 2026.10.0  
 
 Install [ReVanced GmsCore](https://github.com/ReVanced/GmsCore/releases/latest) or [Morphe MicroG-RE](https://github.com/MorpheApp/MicroG-RE/releases/latest) for non-root YouTube and YouTube Music APKs  
