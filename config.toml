@@ -70,7 +70,7 @@ arch = "arm64-v8a"
 build-mode = "both"
 
 [Reddit-Morphe]
-enabled = false
+enabled = true
 app-name = "Reddit"
 version = "2026.10.0"
 archive-dlurl = "https://archive.org/download/jhc-apks/apks/com.reddit.frontpage"
