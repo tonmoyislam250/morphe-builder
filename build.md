@@ -11,3 +11,7 @@ Patches: MorpheApp/patches-1.19.0.mpp
 CLI: ReVanced/revanced-cli-6.0.0-all.jar  
 Patches: ReVanced/patches-6.0.1.rvp  
 [Changelog](https://github.com/ReVanced/revanced-patches/releases/tag/v6.0.1)  
+
+Skipped:  
+Patches: ReVanced/patches-6.0.1.rvp  
+Patches: MorpheApp/patches-1.19.0.mpp    
