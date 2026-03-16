@@ -495,7 +495,7 @@ patch_apk() {
 	local stock_input=$1 patched_apk=$2 patcher_args=$3 cli_jar=$4 patches_jar=$5
 	local patches_flag="-p"
 	case "$cli_jar" in
-		*temp/revanced-rv/revanced-cli-*|*temp\\revanced-rv\\revanced-cli-*) patches_flag="-bp" ;;
+		*temp/revanced-rv/revanced-cli-6.*|*temp\\revanced-rv\\revanced-cli-6.*) patches_flag="-bp" ;;
 	esac
 	local cmd="java -jar '$cli_jar' patch '$stock_input' --purge -o '$patched_apk' ${patches_flag} '$patches_jar' --keystore=ks.keystore \
 --keystore-entry-password=123456789 --keystore-password=123456789 --signer=jhc --keystore-entry-alias=jhc $patcher_args"
