@@ -6,3 +6,6 @@ Install [ReVanced GmsCore](https://github.com/ReVanced/GmsCore/releases/latest) 
 CLI: ReVanced/revanced-cli-5.0.0-all.jar  
 Patches: revanced/patches-5.50.1.rvp  
 [Changelog](https://github.com/revanced/revanced-patches/releases/tag/v5.50.1)  
+
+Skipped:  
+Patches: revanced/patches-5.50.1.rvp    
