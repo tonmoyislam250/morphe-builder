@@ -45,7 +45,7 @@ patcher-args = "-e 'Dark theme' -OdarkThemeBackgroundColor=@android:color/black"
 
 # Morphe
 [YouTube-Morphe]
-enabled= true
+enabled= false
 app-name = "YouTube"
 version = "20.44.38"
 direct-dlurl = "https://github.com/peternmuller/YTYTM-APK/releases/download/1/com.google.android.youtube-20.44.38-all.apk"
@@ -84,12 +84,12 @@ build-mode = "apk"
 dpi = "120-640dpi"
 
 [Tiktok]
-enabled = false
+enabled = true
 version = "36.5.4"
 apkmirror-dlurl = "https://apkmirror.com/apk/tiktok-pte-ltd/tik-tok-including-musical-ly/"
 patches-source = "revanced/revanced-patches" # where to fetch patches bundle from. default: "revanced/revanced-patches"
 cli-source = "ReVanced/revanced-cli"             # where to fetch cli from. default: "ReVanced/revanced-cli"
-patches-version = "v5.50.1"
+patches-version = "latest"
 cli-version = "v5.0.0"
 build-mode = "apk"
 
