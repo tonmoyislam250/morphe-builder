@@ -56,7 +56,6 @@ patches-source = "MorpheApp/morphe-patches"
 cli-source = "MorpheApp/morphe-cli"
 rv-brand = "Morphe"
 build-mode = "apk"
-patcher-args = "-e 'Theme' -OdarkThemeBackgroundColor=#121212"
 
 [YT-Music-Morphe]
 enabled = false
